@@ -1,20 +1,26 @@
 import pickle
 import os
 
+# students.data is always kept next to this file,
+# so it works no matter which folder the program is run from
+FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "students.data")
+
 class Database:
     def load(self):
-        if os.path.exists("students.data"):
-            with open("students.data", "rb") as file:
-                students = pickle.load(file)
-        else:
-            students = []
-            self.save(students)
-        return students
+        # create the file if it does not exist
+        if not os.path.exists(FILE_PATH):
+            self.save([])
+            return []
+        # if the file is empty or damaged, start with an empty list
+        try:
+            with open(FILE_PATH, "rb") as file:
+                return pickle.load(file)
+        except (EOFError, pickle.UnpicklingError):
+            return []
 
     def save(self, students):
-        with open("students.data", "wb") as file:
+        with open(FILE_PATH, "wb") as file:
             pickle.dump(students, file)
 
     def clear(self):
-        with open("students.data", "wb") as file:
-            pickle.dump([], file)
+        self.save([])
