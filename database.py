@@ -24,3 +24,26 @@ class Database:
 
     def clear(self):
         self.save([])
+        
+    def find_student_by_email(self, students, email):
+        for s in students:
+            if s.email == email:
+                return s
+        return None
+
+    def id_exists(self, students, student_id):
+        for s in students:
+            if s.id == student_id:
+                return True
+        return False
+
+    def remove_student_by_id(self, student_id):
+        students = self.load()
+
+        for s in students:
+            if s.id == student_id:
+                students.remove(s)
+                self.save(students)
+                return True
+
+        return False
