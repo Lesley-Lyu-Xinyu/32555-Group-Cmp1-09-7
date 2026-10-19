@@ -11,11 +11,11 @@ class Database:
         if not os.path.exists(FILE_PATH):
             self.save([])
             return []
-        # if the file is empty or damaged, start with an empty list
+        # if the file is empty, damaged or was saved with old class names, start with an empty list
         try:
             with open(FILE_PATH, "rb") as file:
                 return pickle.load(file)
-        except (EOFError, pickle.UnpicklingError):
+        except (EOFError, pickle.UnpicklingError, ModuleNotFoundError, AttributeError):
             return []
 
     def save(self, students):
@@ -24,7 +24,7 @@ class Database:
 
     def clear(self):
         self.save([])
-        
+
     def find_student_by_email(self, students, email):
         for s in students:
             if s.email == email:
@@ -39,11 +39,9 @@ class Database:
 
     def remove_student_by_id(self, student_id):
         students = self.load()
-
         for s in students:
             if s.id == student_id:
                 students.remove(s)
                 self.save(students)
                 return True
-
         return False
