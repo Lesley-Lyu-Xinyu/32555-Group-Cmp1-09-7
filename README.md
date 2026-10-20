@@ -61,7 +61,7 @@ Note: register a student in the CLI app first. The GUI has login only.
 ## Login Format
 
 - Email must end with @university.com (example: john.smith@university.com)
-- Password must start with a capital letter, followed by at least 5 more letters, and end with 3 or more numbers (example: Helloworld123). Hello123 is not valid.
+- Password must start with a capital letter, followed by at least 4 more letters, and end with 3 or more numbers (example: Helloworld123). Hello123 is not valid.
 
 ## Showcase Demo Plan
 
