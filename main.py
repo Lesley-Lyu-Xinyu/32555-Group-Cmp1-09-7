@@ -4,25 +4,13 @@ from database import Database
 from student import Student
 
 EMAIL_PATTERN = r"^[\w.-]+@university\.com$"
-PASSWORD_PATTERN = r"^[A-Z][A-Za-z]{4,}\d{3,}$"
+PASSWORD_PATTERN = r"^[A-Z][A-Za-z]{5,}\d{3,}$"
 
 def is_valid_email(email):
     return re.match(EMAIL_PATTERN, email) is not None
 
 def is_valid_password(password):
     return re.match(PASSWORD_PATTERN, password) is not None
-
-def find_student_by_email(students, email):
-    for s in students:
-        if s.email == email:
-            return s
-    return None
-
-def id_exists(students, student_id):
-    for s in students:
-        if s.id == student_id:
-            return True
-    return False
 
 def course_menu(student, db, students):
     while True:
@@ -31,7 +19,13 @@ def course_menu(student, db, students):
 
         if choice == "c":
             print("\t\tUpdating Password")
-            new_password = input("\t\tNew Password: ")
+
+            while True:
+                new_password = input("\t\tNew Password: ")
+                if is_valid_password(new_password):
+                    break
+                print("\t\tIncorrect password format")
+
             while True:
                 confirm_password = input("\t\tConfirm Password: ")
                 if new_password == confirm_password:
@@ -71,7 +65,7 @@ def student_menu(db):
                     break
                 print("\tIncorrect email or password format")
 
-            student =find_student_by_email(students, email)
+            student = db.find_student_by_email(students, email)
 
             if student is not None and student.password == password:
                 course_menu(student, db, students)
@@ -88,14 +82,14 @@ def student_menu(db):
                     break
                 print("\tIncorrect email or password format")
 
-            existing =find_student_by_email(students, email)
+            existing = db.find_student_by_email(students, email)
 
             if existing:
                 print("\tStudent", existing.name, "already exists")
             else:
                 name = input("\tName: ")
                 student_id = str(random.randint(1, 999999)).zfill(6)
-                while id_exists(students, student_id):
+                while db.id_exists(students, student_id):
                     student_id = str(random.randint(1, 999999)).zfill(6)
                 new_student = Student(student_id, name, email, password)
                 students.append(new_student)
@@ -121,7 +115,7 @@ def average_grade(average):
 def format_student(s):
     average = s.get_average()
     grade = average_grade(average)
-    return s.name + " :: " + s.id + " --> GRADE:  " + grade + " - MARK: " + "{:.2f}".format(average)
+    return s.name + " :: " + s.id + " --> GRADE:  " + grade + " - MARK: " + "{:.>2}".format(average)
 
 def admin_menu(db):
     while True:
@@ -162,15 +156,9 @@ def admin_menu(db):
             print("\tFAIL --> [" + ", ".join(fail) + "]")
             print("\tPASS --> [" + ", ".join(passed) + "]")
         elif choice == "r":
-            students = db.load()
             remove_id = input("\tRemove by ID: ")
-            found = None
-            for s in students:
-                if s.id == remove_id:
-                    found = s
-            if found:
-                students.remove(found)
-                db.save(students)
+
+            if db.remove_student_by_id(remove_id):
                 print("\tRemoving Student " + remove_id + " Account")
             else:
                 print("\tStudent " + remove_id + " does not exist")
