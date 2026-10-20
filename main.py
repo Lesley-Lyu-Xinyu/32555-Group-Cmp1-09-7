@@ -115,7 +115,7 @@ def average_grade(average):
 def format_student(s):
     average = s.get_average()
     grade = average_grade(average)
-    return s.name + " :: " + s.id + " --> GRADE:  " + grade + " - MARK: " + "{:.>2}".format(average)
+    return s.name + " :: " + s.id + " --> GRADE: " + "{:>2}".format(grade) + " - MARK: " + "{:.2f}".format(average)
 
 def admin_menu(db):
     while True:
@@ -142,7 +142,7 @@ def admin_menu(db):
                         if average_grade(s.get_average()) == grade:
                             group.append(format_student(s))
                     if len(group) > 0:
-                        print("\t" + grade + "  --> [" + ", ".join(group) + "]")
+                        print("\t" + "{:<2}".format(grade) + " --> [" + ", ".join(group) + "]")
         elif choice == "p":
             students = db.load()
             print("\tPASS/FAIL Partition")
