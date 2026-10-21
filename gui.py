@@ -301,8 +301,13 @@ class LoginWindow:
         password = self.password_entry.get().strip()
 
         # 1. empty fields
-        if email == "" or password == "":
-            ExceptionWindow(self.root, "Email and password cannot be empty")
+        if email == "":
+            ExceptionWindow(self.root, "Email cannot be empty")
+            return
+        
+        # 1a. empty fields
+        if password == "":
+            ExceptionWindow(self.root, "Password cannot be empty")
             return
 
         # 2. wrong format
