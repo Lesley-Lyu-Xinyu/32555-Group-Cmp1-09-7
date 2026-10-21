@@ -14,7 +14,9 @@ def is_valid_password(password):
 
 def course_menu(student, db, students):
     while True:
-        choice = input("\t\tStudent Course Menu (c/e/r/s/x): ")
+        # choice = input("\t\tStudent Course Menu (c/e/r/s/x): ")
+        choice = input("\t\tStudent Course Menu (c/e/r/s/x):" \
+        "\n\t\tc - Change Password\n\t\te - Enroll in Subject\n\t\tr - Remove Subject\n\t\ts - Show Subjects\n\t\tx - Exit\n")
         choice = choice.strip().lower()
 
         if choice == "c":
@@ -51,7 +53,9 @@ def student_menu(db):
     students = db.load()
 
     while True:
-        choice = input("\tStudent System (l/r/x): ")
+        # choice = input("\tStudent System (l/r/x): ")
+        choice = input("\tStudent System (l/r/x): " \
+        "\n\tl - Log In\n\tr - Register Student\n\tx - Exit\n")
         choice = choice.strip().lower()
 
         if choice == "l":
@@ -119,7 +123,9 @@ def format_student(s):
 
 def admin_menu(db):
     while True:
-        choice = input("\tAdmin System (c/g/p/r/s/x): ")
+        # choice = input("\tAdmin System (c/g/p/r/s/x): ")
+        choice = input("\tAdmin System (c/g/p/r/s/x): " \
+        "\n\tc - Clear Database\n\tg - Group Students\n\tp - Show Pass/Fail Partition\n\tr - Remove Student by ID\n\ts - Show all Students\n\tx - Exit\n")
         choice = choice.strip().lower()
 
         if choice == "s":
